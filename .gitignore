@@ -1,5 +1,6 @@
 /node_modules/
 /tmp/
+/db/
 /assets/styles.css
 *_templ.go
 .env

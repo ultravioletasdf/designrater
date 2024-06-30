@@ -3,6 +3,8 @@ module.exports = {
   content: ["./frontend/**/*.templ"],
   plugins: [require("daisyui")],
   daisyui: {
-    themes: ["bumblebee"],
+    themes: ["emerald", "dracula"],
+    darkTheme: "dracula",
+    logs: false,
   },
 };

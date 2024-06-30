@@ -1,0 +1,118 @@
+package frontend
+
+templ Sign(apiUrl string, title string, subtitle string, linkText string, linkSubtext string, link string) {
+	@Page() {
+		<div class="flex items-center p-4 w-full h-full bg-[url('/assets/bg_light.avif')] dark:bg-[url('/assets/bg_dark.avif')] bg-cover bg-center  sm:p-0">
+			<div class="flex flex-col justify-center p-8 w-full rounded-lg backdrop-blur-md bg-base-100 sm:rounded-none h-fit sm:h-full sm:px-16 dark:bg-opacity-70 md:w-2/3 lg:w-1/2">
+				<form hx-post={ apiUrl } class="flex flex-col gap-4">
+					<h1 class="mb-2 text-4xl font-black tracking-tighter"><span class="text-red-400">Design</span><span class="text-green-400">Rater</span></h1>
+					<div class="flex flex-col gap-2">
+						<h1 class="text-2xl font-bold">{ title }</h1>
+						<p class="text-opacity-75 text-base-content">{ subtitle }</p>
+					</div>
+					<div class="flex flex-col gap-2">
+						<label class="flex gap-2 items-center input input-bordered">
+							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="opacity-70 size-4">
+								<path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12.735 14c.618 0 1.093-.561.872-1.139a6.002 6.002 0 0 0-11.215 0c-.22.578.254 1.139.872 1.139h9.47Z"></path>
+							</svg>
+							<input type="text" class="grow" placeholder="Username" id="input_username"/>
+						</label>
+						<label class="flex gap-2 items-center input input-bordered">
+							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="opacity-70 size-4">
+								<path fill-rule="evenodd" d="M14 6a4 4 0 0 1-4.899 3.899l-1.955 1.955a.5.5 0 0 1-.353.146H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2.293a.5.5 0 0 1 .146-.353l3.955-3.955A4 4 0 1 1 14 6Zm-4-2a.75.75 0 0 0 0 1.5.5.5 0 0 1 .5.5.75.75 0 0 0 1.5 0 2 2 0 0 0-2-2Z" clip-rule="evenodd"></path>
+							</svg>
+							<input type="password" class="grow" placeholder="Password" id="input_password"/>
+							<button id="button_password_visibility" type="button" class="text-opacity-80 text-base-content hover:text-opacity-100" data-visible="false">
+								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4">
+									<path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"></path>
+									<path fill-rule="evenodd" d="M1.38 8.28a.87.87 0 0 1 0-.566 7.003 7.003 0 0 1 13.238.006.87.87 0 0 1 0 .566A7.003 7.003 0 0 1 1.379 8.28ZM11 8a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" clip-rule="evenodd"></path>
+								</svg>
+							</button>
+						</label>
+					</div>
+					<div class="relative h-16">
+						<span class="absolute -top-3 w-full text-center text-error" id="message_error"></span>
+						<button class="absolute bottom-0 btn btn-block btn-primary" disabled id="button_signup">Continue</button>
+					</div>
+					<p class="text-sm text-opacity-65 text-base-content">{ linkSubtext } <a href={ templ.URL(link) } class="text-opacity-100 no-underline text-secondary hover:underline">{ linkText }</a></p>
+				</form>
+			</div>
+			<div class="fixed right-2 bottom-2 text-xs text-opacity-80 text-base-content">
+				Photo by 
+				<a
+					class="text-opacity-80 text-base-content hover:text-opacity-100 hover:underline"
+					target="_blank"
+					href="https://unsplash.com/@fakurian?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash"
+				>
+					Milad Fakurian
+				</a>
+				on 
+				<a
+					class="text-opacity-80 text-base-content hover:text-opacity-100 hover:underline"
+					target="_blank"
+					href="https://unsplash.com/photos/a-group-of-white-and-black-objects-XN_r2bNOsO4?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash"
+				>
+					Unsplash
+				</a>
+			</div>
+		</div>
+		<script>
+        const eyeOpen = `   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4">
+                                <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z" />
+                                <path fill-rule="evenodd" d="M1.38 8.28a.87.87 0 0 1 0-.566 7.003 7.003 0 0 1 13.238.006.87.87 0 0 1 0 .566A7.003 7.003 0 0 1 1.379 8.28ZM11 8a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" clip-rule="evenodd" />
+                            </svg>`
+        const eyeClosed = ` <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4">
+                                <path fill-rule="evenodd" d="M3.28 2.22a.75.75 0 0 0-1.06 1.06l10.5 10.5a.75.75 0 1 0 1.06-1.06l-1.322-1.323a7.012 7.012 0 0 0 2.16-3.11.87.87 0 0 0 0-.567A7.003 7.003 0 0 0 4.82 3.76l-1.54-1.54Zm3.196 3.195 1.135 1.136A1.502 1.502 0 0 1 9.45 8.389l1.136 1.135a3 3 0 0 0-4.109-4.109Z" clip-rule="evenodd" />
+                                <path d="m7.812 10.994 1.816 1.816A7.003 7.003 0 0 1 1.38 8.28a.87.87 0 0 1 0-.566 6.985 6.985 0 0 1 1.113-2.039l2.513 2.513a3 3 0 0 0 2.806 2.806Z" />
+                            </svg>`;
+                            
+        const username = document.querySelector('#input_username')
+        const password = document.querySelector('#input_password')
+        const error = document.querySelector('#message_error')
+        const button = document.querySelector('#button_signup')
+        const visibilityButton = document.querySelector('#button_password_visibility')
+
+        username.value = ""
+        password.value = ""
+
+        function onInput() {
+            username.value = username.value.replace(/[^(A-z)(0-9)]+/, "");
+            password.value = password.value.replace(/\s/g, "");
+            if (username.value.length < 3) {
+                error.textContent = "Username must be longer than 2 characters"
+            } else if (password.value.length < 8) {
+                error.textContent = "Password must be longer than 7 characters"
+            } else if (username.value.length > 32) {
+                error.textContent = "Username must be no longer than 32 characters"
+            } else if (password.value.length > 32) {
+                error.textContent = "Password must be no longer than 32 characters"
+            } else {
+                error.textContent = ""
+            }
+            if (username.value.length > 2 && username.value.length <= 32 && password.value.length > 7 && password.value.length <= 32) {
+                button.disabled = false
+            } else {
+                button.disabled = true
+            }
+        }
+
+        username.oninput = onInput
+        password.oninput = onInput
+
+        function toggleVisibility() {
+            let visible = visibilityButton.getAttribute("data-visible")
+            visible = visible === "true"
+
+            visibilityButton.setAttribute("data-visible", !visible)
+            if (visible) {
+                visibilityButton.innerHTML = eyeOpen
+                password.type = "password"
+            } else {
+                visibilityButton.innerHTML = eyeClosed
+                password.type = "text"
+            }
+        }
+        visibilityButton.onclick = toggleVisibility
+    </script>
+	}
+}
